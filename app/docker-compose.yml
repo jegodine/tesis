@@ -1,0 +1,10 @@
+version: '3'
+services:
+  react-native:
+    build:
+      context: .
+    ports:
+      - "8081:8081"
+    volumes:
+      - .:/usr/src/app
+    command: sh -c "npm install && npx expo start"
