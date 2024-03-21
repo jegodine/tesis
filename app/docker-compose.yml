@@ -8,3 +8,21 @@ services:
     volumes:
       - .:/usr/src/app
     command: sh -c "npm install && tail -F start"
+  mongo:
+    build:
+      context: docker/
+      dockerfile: Mongofile
+    ports:
+    - "27017:27017"
+    volumes:
+    - .db/:/data/db
+    command: sh -c "mongod --bind_ip_all && tail -f mongo"
+  node:
+    build:
+      context: docker/
+      dockerfile: Nodefile
+    ports:
+    - "8082:8082"
+    volumes:
+    - ../service/:/usr/src/app
+    command: sh -c "tail -F node"

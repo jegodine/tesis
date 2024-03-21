@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "test",
+    "scheme": "scheme",
     "slug": "test",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -32,6 +33,16 @@
       "eas": {
         "projectId": "b9b1900b-7c2f-410b-b89a-4f65489f3fc4"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow  $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow  $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ]
+    ]
   }
 }
