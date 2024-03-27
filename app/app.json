@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "test",
-    "scheme": "scheme",
+    "name": "doctoria",
+    "scheme": "com.anonymous.doctoria",
     "slug": "test",
-    "version": "1.0.0",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,17 +17,18 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.test"
+      "bundleIdentifier": "com.anonymous.doctoria"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.test"
+      "package": "com.anonymous.doctoria",
+      "versionCode": 2
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
     },
     "extra": {
       "eas": {
@@ -41,6 +42,14 @@
           "cameraPermission": "Allow  $(PRODUCT_NAME) to access your camera",
           "microphonePermission": "Allow  $(PRODUCT_NAME) to access your microphone",
           "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
         }
       ]
     ]

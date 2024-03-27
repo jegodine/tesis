@@ -1,3 +1,5 @@
 app/node_modules
 app/package-lock.json
 app/.expo
+service/node_modules
+service/package-lock.json

@@ -1,0 +1,25 @@
+FROM ubuntu:23.10
+RUN apt update
+RUN apt upgrade -y && apt-get autoclean
+RUN apt remove mongodb && apt purge mongodb && apt autoremove 
+RUN apt-get install apt-transport-https libc6 gnupg wget ca-certificates software-properties-common curl -y 
+
+RUN curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
+   gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg \
+   --dearmor
+RUN echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+RUN apt-get update -y
+RUN apt-get install -y mongodb-org
+ARG MONGO_PACKAGE=mongodb-org
+RUN apt-get install -y \
+		${MONGO_PACKAGE}-server \
+		${MONGO_PACKAGE}-shell \
+		${MONGO_PACKAGE}-mongos \
+		${MONGO_PACKAGE}-tools \
+                && mv /etc/mongod.conf /etc/mongod.conf.orig
+RUN apt install -y screen nmap telnet vim
+
+RUN chown -R root:mongodb /var/lib/mongodb && mkdir -p /data/db && mkdir -p /data/configdb 
+RUN chown -R root:mongodb /data/db /data/configdb
+
+CMD ["mongod","--bind_ip_all"]

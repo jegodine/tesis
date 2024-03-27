@@ -5,9 +5,12 @@ import LoginScreen from './login'
 export default function Home({ navigation, route }) {
     return (
         <View style={styles.container}>
-            <Text>Doctor IA Radiografia{route?.params?.name}</Text>
+            <Text style={{
+                fontSize: 20,
+                marginBottom: 10
+            }}>Doctor IA Radiografia</Text>
             <StatusBar style="auto" />
-            <LoginScreen navigation={navigation}/>
+            <LoginScreen navigation={navigation} />
         </View>
     );
 }

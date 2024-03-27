@@ -1,12 +1,13 @@
 import { Camera, CameraType } from 'expo-camera';
 import { useState, useRef } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Button, Text } from '@rneui/themed';
+import { manipulateAsync } from 'expo-image-manipulator';
 
-export default function CameraPlugin() {
+export default function CameraPlugin({ setImage, showCamera }) {
     const cameraRef = useRef(null);
     const [type, setType] = useState(CameraType.back);
     const [permission, requestPermission] = Camera.useCameraPermissions();
-    const [capturedImage, setCapturedImage] = useState(null);
 
     if (!permission) {
         // Camera permissions are still loading
@@ -41,10 +42,16 @@ export default function CameraPlugin() {
     const picCamera = async () => {
         try {
             const data = await cameraRef.current.takePictureAsync({
-                quality: 0.7, // Optional: adjust image quality (0-1)
-                base64: true,  // Optional: return image data as base64 string
+                quality: 0.2, // Optional: adjust image quality (0-1)
+                base64: false,  // Optional: return image data as base64 string
             });
-            setCapturedImage(data.uri); // Update state with captured image URI
+            let resizedPhoto = await manipulateAsync(
+                data.uri,
+                [{ resize: { width: 600, height: 600 } }],
+                { compress: 1, format: "jpeg", base64: true }
+            );
+            setImage(resizedPhoto);
+            showCamera(false);
         } catch (error) {
             console.error('Error taking picture:', error);
         }
@@ -52,17 +59,15 @@ export default function CameraPlugin() {
     }
 
     function toggleCameraType() {
-        console.log("change");
         setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
     }
 
     return (
         <View style={styles.container}>
-            <Camera style={styles.camera} type={type} ref={cameraRef}>
-                <View style={styles.buttonContainer} onPress={() => { console.log("pressed viewed"); }}>
-                    <TouchableOpacity style={styles.button} onPress={toggleCameraType} >
-                        <Text onPress={() => { console.log("flip pressed"); cameraFunctions("FLIP"); }} style={styles.text}>Cambiar camara</Text>
-                        {console.log("text rendered")}
+            <Camera style={styles.camera} type={type} ref={cameraRef} ratio={'16:9'}>
+                <View style={styles.buttonContainer} >
+                    <TouchableOpacity style={styles.button} >
+                        <Text onPress={() => { cameraFunctions("FLIP"); }} style={styles.text}>Cambiar camara</Text>
                         <Text onPress={() => { cameraFunctions("PIC"); }} style={styles.text}>Tomar foto</Text>
                     </TouchableOpacity>
                 </View>
@@ -76,7 +81,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         width: '100%',
-        height: '100%',
+        height: '50%',
     },
     camera: {
         flex: 1,

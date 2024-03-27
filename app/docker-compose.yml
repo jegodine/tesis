@@ -8,6 +8,9 @@ services:
     volumes:
       - .:/usr/src/app
     command: sh -c "npm install && tail -F start"
+    networks:
+    - frontend
+    - backend
   mongo:
     build:
       context: docker/
@@ -17,6 +20,8 @@ services:
     volumes:
     - .db/:/data/db
     command: sh -c "mongod --bind_ip_all && tail -f mongo"
+    networks:
+    - database
   node:
     build:
       context: docker/
@@ -25,4 +30,11 @@ services:
     - "8082:8082"
     volumes:
     - ../service/:/usr/src/app
-    command: sh -c "tail -F node"
+    command: sh -c "npm install && tail -F node"
+    networks:
+    - backend
+    - database
+networks:
+  frontend:
+  backend:
+  database:

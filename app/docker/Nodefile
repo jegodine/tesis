@@ -1,0 +1,9 @@
+FROM node:20.11.1
+
+RUN apt update
+RUN apt upgrade -y && apt-get autoclean
+RUN apt-get install apt-transport-https libc6 gnupg wget ca-certificates software-properties-common curl -y 
+
+WORKDIR /usr/src/app
+
+EXPOSE 8082
